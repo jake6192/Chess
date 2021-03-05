@@ -19,21 +19,21 @@ class Board {
         for(let i = 0; i < 2; i++) func((c&&i?8:(!c&&i?64:(c&&!i?1:57))), 'rook', colour);
         for(let i = 0; i < 2; i++) func((c&&i?7:(!c&&i?63:(c&&!i?2:58))), 'knight', colour);
         for(let i = 0; i < 2; i++) func((c&&i?6:(!c&&i?62:(c&&!i?3:59))), 'bishop', colour);
-        func(c?4:61, 'queen', colour);
-        func(c?5:60, 'king', colour);
+        func(c?4:60, 'queen', colour);
+        func(c?5:61, 'king', colour);
       }
     };
 
     this.drawBoard = () => {
       for(let i = 0; i < BOARD.cells.length; i++)
-        $('#board').append(`<div class="cell" cellID="${BOARD.cells[i].cellID}"></div>`);
+        $('#board').append(`<div class="cell" cellID="${BOARD.cells[i].cellID}" ondrop="drop_handler(event, this)" ondragover="dragover_handler(event)"></div>`);
     };
 
     this.drawCellValues = () => {
       for(let i = 0; i < BOARD.cells.length; i++) {
         let cell = BOARD.cells[i];
-        $(`#board .cell[cellID="${i+1}"]`).attr('class', 'cell');
-        if(cell.containsPiece) $(`#board .cell[cellID="${i+1}"]`).addClass(cell.piece.pieceType).addClass(cell.piece.colour);
+        $(`#board .cell[cellID="${i+1}"]`).html('');
+        if(cell.containsPiece) $(`#board .cell[cellID="${i+1}"]`).html(`<img draggable="true" ondragstart="dragstart_handler(event, this)" src="imgs/${cell.piece.pieceType}_${cell.piece.colour}.png" />`);
       }
     };
   }
@@ -63,14 +63,18 @@ class Piece {
     this.currentCell = startingCell;
     this.colour = colour;
     this.pieceType = pieceType;
+    this.validMoves;
 
-    this.movePiece = (newCellID) => {
+    this.movePiece = (newCell) => {
       let oldCell = BOARD.cells[this.currentCell.cellID-1];
-      this.currentCell = BOARD.cells[newCellID-1];
+      this.currentCell = newCell;
       this.currentCell.piece = oldCell.piece;
       this.currentCell.containsPiece = true;
       oldCell.piece = undefined;
       oldCell.containsPiece = false;
+      BOARD.drawCellValues();
     };
+
+    this.updateValidMovesList = () => {}; // TODO //
   }
 }
