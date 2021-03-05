@@ -13,7 +13,7 @@ div#board {
   color: #fff;
   text-align: center;
   border: 1px solid #000;
-  background-color: #946540;
+  background-color: #946540 !important;
 }
 
 .cell:nth-child(-2n+8),
@@ -23,4 +23,18 @@ div#board {
 .cell:nth-child(32) ~ div:nth-child(-2n+40),
 .cell:nth-child(40) ~ div:nth-child(-2n+47),
 .cell:nth-child(48) ~ div:nth-child(-2n+56),
-.cell:nth-child(56) ~ div:nth-child(-2n+63) { background-color: #6d5131; }
+.cell:nth-child(56) ~ div:nth-child(-2n+63) { background-color: #6d5131 !important; }
+
+
+.pawn.W { background: url(imgs/pawn_W.png) center no-repeat; }
+.pawn.B { background: url(imgs/pawn_B.png) center no-repeat; }
+.rook.W { background: url(imgs/rook_W.png) center no-repeat; }
+.rook.B { background: url(imgs/rook_B.png) center no-repeat; }
+.knight.W { background: url(imgs/knight_W.png) center no-repeat; }
+.knight.B { background: url(imgs/knight_B.png) center no-repeat; }
+.bishop.W { background: url(imgs/bishop_W.png) center no-repeat; }
+.bishop.B { background: url(imgs/bishop_B.png) center no-repeat; }
+.queen.W { background: url(imgs/queen_W.png) center no-repeat; }
+.queen.B { background: url(imgs/queen_B.png) center no-repeat; }
+.king.W { background: url(imgs/king_W.png) center no-repeat; }
+.king.B { background: url(imgs/king_B.png) center no-repeat; }

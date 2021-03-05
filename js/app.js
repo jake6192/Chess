@@ -7,8 +7,8 @@ class Board {
 
     this.generatePieces = () => {
       let func = (cellID, pieceType, colour) => {
-        let piece = new Piece(cellID, pieceType, colour);
         let cell = BOARD.cells.filter(e=>e.cellID===cellID)[0];
+        let piece = new Piece(cell, pieceType, colour);
         cell.containsPiece = true;
         cell.piece = piece;
         BOARD.pieces.push(piece);
@@ -22,17 +22,19 @@ class Board {
         func(c?4:61, 'queen', colour);
         func(c?5:60, 'king', colour);
       }
-      this.drawCellValues();
     };
 
     this.drawBoard = () => {
       for(let i = 0; i < BOARD.cells.length; i++)
-        $('#board').append(`<div class="cell" cellID="${i+1}"></div>`);
+        $('#board').append(`<div class="cell" cellID="${BOARD.cells[i].cellID}"></div>`);
     };
 
     this.drawCellValues = () => {
-      for(let i = 0; i < BOARD.cells.length; i++)
-        $(`#board .cell[cellID="${i+1}"]`).text(BOARD.cells[i].containsPiece ? BOARD.cells[i].piece.pieceType.substr(0,4) : i+1);
+      for(let i = 0; i < BOARD.cells.length; i++) {
+        let cell = BOARD.cells[i];
+        $(`#board .cell[cellID="${i+1}"]`).attr('class', 'cell');
+        if(cell.containsPiece) $(`#board .cell[cellID="${i+1}"]`).addClass(cell.piece.pieceType).addClass(cell.piece.colour);
+      }
     };
   }
 }
@@ -62,8 +64,13 @@ class Piece {
     this.colour = colour;
     this.pieceType = pieceType;
 
-    this.drawPiece = () => {
-
+    this.movePiece = (newCellID) => {
+      let oldCell = BOARD.cells[this.currentCell.cellID-1];
+      this.currentCell = BOARD.cells[newCellID-1];
+      this.currentCell.piece = oldCell.piece;
+      this.currentCell.containsPiece = true;
+      oldCell.piece = undefined;
+      oldCell.containsPiece = false;
     };
   }
 }
