@@ -20,6 +20,7 @@ div#board {
   border: 1px solid #000;
   background-color: #946540 !important;
 }
+#board .cell.highlight { background-color: #f00 !important;}
 
 .cell:nth-child(-2n+8),
 .cell:nth-child(8) ~ div:nth-child(-2n+15),

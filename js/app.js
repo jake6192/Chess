@@ -75,6 +75,30 @@ class Piece {
       BOARD.drawCellValues();
     };
 
-    this.updateValidMovesList = () => {}; // TODO //
+    this.updateValidMovesList = () => {
+      let _C = this.colour==='W'?0:1;
+      let r = this.currentCell.row, c = this.currentCell.column;
+      switch(this.pieceType) {
+        case 'pawn': this.validMoves = BOARD.cells.filter(e => (
+            e.containsPiece && // If there is a piece to take. //
+            e.row === r-(_C?-1:1) &&
+            (e.column === c-1 || e.column === c+1) // Check that this capture is valid for this pawn. //
+          ) || (
+            !e.containsPiece && // If the target cell is empty. //
+            e.column === c && (
+              (this.startingCell === this.currentCell) ? // Check if pawn is allowed to move 1 or 2 cells. //
+                (e.row === r-(_C?-1:1) || e.row === r-(_C?-2:2)) : e.row === r-(_C?-1:1)
+            )
+          )
+        ); break;
+        case 'rook':
+        case 'knight':
+        case 'bishop':
+        case 'queen':
+        case 'king':
+        default: this.validMoves = BOARD.cells.filter(e=>e!=this.currentCell); break;
+      }
+    };
+    this.showValidMoves = () => { $($('.cell').toArray().filter(e => this.validMoves.indexOf(BOARD.cells[(+$(e).attr('cellID'))-1]) !== -1)).addClass('highlight'); };
   }
 }
