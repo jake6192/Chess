@@ -18,8 +18,10 @@ let pieceToMove;
 function dragstart_handler(ev, el) {
  ev.dataTransfer.effectAllowed = "move";
  pieceToMove = BOARD.cells[(+$(el).parent().attr('cellID'))-1].piece;
- pieceToMove.updateValidMovesList();
- pieceToMove.showValidMoves();
+ if(pieceToMove.colour === (BOARD.whiteIsToMoveNext ? 'W' : 'B')) {
+   pieceToMove.updateValidMovesList();
+   pieceToMove.showValidMoves();
+ } else ev.preventDefault();
 }
 
 function dragover_handler(ev) {

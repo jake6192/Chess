@@ -2,6 +2,7 @@ class Board {
   constructor() {
     this.cells = [];
     this.pieces = [];
+    this.whiteIsToMoveNext = true;
 
     this.generateCells = () => { for(let i = 0; i < 64; i++) this.cells.push(new Cell(i+1)); };
 
@@ -72,6 +73,7 @@ class Piece {
       this.currentCell.containsPiece = true;
       oldCell.piece = undefined;
       oldCell.containsPiece = false;
+      BOARD.whiteIsToMoveNext = !BOARD.whiteIsToMoveNext;
       BOARD.drawCellValues();
     };
 
