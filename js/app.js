@@ -76,6 +76,7 @@ class Piece {
     };
 
     this.updateValidMovesList = () => {
+      let arr;
       let _C = this.colour==='W'?0:1;
       let r = this.currentCell.row, c = this.currentCell.column;
       switch(this.pieceType) {
@@ -89,13 +90,27 @@ class Piece {
               (this.startingCell === this.currentCell) ? // Check if pawn is allowed to move 1 or 2 cells. //
                 (e.row === r-(_C?-1:1) || e.row === r-(_C?-2:2)) : e.row === r-(_C?-1:1)
             )
-          )
-        ); break;
-        case 'rook':
-        case 'knight':
-        case 'bishop':
-        case 'queen':
-        case 'king':
+          )); break;
+        case 'rook': this.validMoves = BOARD.cells.filter(e => (e !== this.currentCell) && (e.row === r || e.column === c)); break;
+        case 'knight': this.validMoves = BOARD.cells.filter(e =>
+          (e !== this.currentCell) && (
+            (e.row === r-2 && e.column === c-1) || (e.row === r-2 && e.column === c+1) || (e.row === r+2 && e.column === c-1) || (e.row === r+2 && e.column === c+1) ||
+            (e.row === r-1 && e.column === c-2) || (e.row === r-1 && e.column === c+2) || (e.row === r+1 && e.column === c-2) || (e.row === r+1 && e.column === c+2)
+          )); break;
+        case 'bishop': // Bishop uses same diagonal method as queen (below). //
+        case 'queen': arr = [];
+          if(this.pieceType === 'queen') arr = BOARD.cells.filter(e => (e !== this.currentCell) && (e.row === r || e.column === c));
+          for(let a = 0; a < 4; a++) switch(a) {
+            case 0: loop0: for(let b = 1; b < c;      b++) { arr.push(BOARD.cells[(this.currentCell.cellID-(9*b))-1]); if(BOARD.cells[(this.currentCell.cellID-(9*b))-1].containsPiece) break loop0; } break;
+            case 1: loop1: for(let b = 1; b <= (8-c); b++) { arr.push(BOARD.cells[(this.currentCell.cellID-(7*b))-1]); if(BOARD.cells[(this.currentCell.cellID-(9*b))-1].containsPiece) break loop1; } break;
+            case 2: loop2: for(let b = 1; b < c;      b++) { arr.push(BOARD.cells[(this.currentCell.cellID+(7*b))-1]); if(BOARD.cells[(this.currentCell.cellID-(9*b))-1].containsPiece) break loop2; } break;
+            case 3: loop3: for(let b = 1; b <= (8-c); b++) { arr.push(BOARD.cells[(this.currentCell.cellID+(9*b))-1]); if(BOARD.cells[(this.currentCell.cellID-(9*b))-1].containsPiece) break loop3; } break;
+          } this.validMoves = arr.filter(e => e !== this.currentCell); break;
+        case 'king': this.validMoves = BOARD.cells.filter(e =>
+          (e !== this.currentCell) && (
+            (e.row === r-1 && e.column === c-1) || (e.row === r-1 && e.column === c) || (e.row === r-1 && e.column === c+1) || (e.row === r && e.column === c+1) ||
+            (e.row === r+1 && e.column === c+1) || (e.row === r+1 && e.column === c) || (e.row === r+1 && e.column === c-1) || (e.row === r && e.column === c-1)
+          )); break;
         default: this.validMoves = BOARD.cells.filter(e=>e!=this.currentCell); break;
       }
     };
