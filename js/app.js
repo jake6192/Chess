@@ -91,7 +91,6 @@ class Piece {
                 (e.row === r-(_C?-1:1) || e.row === r-(_C?-2:2)) : e.row === r-(_C?-1:1)
             )
           )); break;
-        // case 'rook': this.validMoves = BOARD.cells.filter(e => (e !== this.currentCell) && (e.row === r || e.column === c)); break;
         case 'rook': arr = [];
           for(let a = 0; a < 4; a++) switch(a) {
             case 0: loop0: for(let b = 1; b < c; b++) { try { let cell = BOARD.cells[(currentCell.cellID-b)-1]; arr.push(cell); if(cell.containsPiece) { if(cell.piece.colour === this.colour) arr.pop(); break loop0; } } catch(e) {;} } break;
@@ -107,14 +106,14 @@ class Piece {
         case 'bishop': // Bishop uses same diagonal method as queen (below). //
         case 'queen': arr = [];
           for(let a = 0; a < 4; a++) switch(a) {
-            case 0: loop0: for(let b = 1; b < c; b++) { try { let cell = BOARD.cells[(currentCell.cellID-(9*b))-1]; arr.push(cell); if(cell.containsPiece) { if(cell.piece.colour === this.colour) arr.pop(); break loop0; } } catch(e) {;} }
-              if(this.pieceType === 'queen') loop0: for(let b = 1; b < c; b++) { try { let cell = BOARD.cells[(currentCell.cellID-b)-1]; arr.push(cell); if(cell.containsPiece) { if(cell.piece.colour === this.colour) arr.pop(); break loop0; } } catch(e) {;} } break;
-            case 1: loop1: for(let b = 1; b <= (8-c); b++) { try { let cell = BOARD.cells[(currentCell.cellID-(7*b))-1]; arr.push(cell); if(cell.containsPiece) { if(cell.piece.colour === this.colour) arr.pop(); break loop1; } } catch(e) {;} }
-              if(this.pieceType === 'queen') loop1: for(let b = 1; b <= (8-c); b++) { try { let cell = BOARD.cells[(currentCell.cellID+b)-1]; arr.push(cell); if(cell.containsPiece) { if(cell.piece.colour === this.colour) arr.pop(); break loop1; } } catch(e) {;} } break;
-            case 2: loop2: for(let b = 1; b < c; b++) { try { let cell = BOARD.cells[(currentCell.cellID+(7*b))-1]; arr.push(cell); if(cell.containsPiece) { if(cell.piece.colour === this.colour) arr.pop(); break loop2; } } catch(e) {;} }
-              if(this.pieceType === 'queen') loop2: for(let b = 1; b <= (8-r); b++) { try { let cell = BOARD.cells[(currentCell.cellID+(8*b))-1]; arr.push(cell); if(cell.containsPiece) { if(cell.piece.colour === this.colour) arr.pop(); break loop2; } } catch(e) {;} } break;
-            case 3: loop3: for(let b = 1; b <= (8-c); b++) { try { let cell = BOARD.cells[(currentCell.cellID+(9*b))-1]; arr.push(cell); if(cell.containsPiece) { if(cell.piece.colour === this.colour) arr.pop(); break loop3; } } catch(e) {;} }
-              if(this.pieceType === 'queen') loop3: for(let b = 1; b < r; b++) { try { let cell = BOARD.cells[(currentCell.cellID-(8*b))-1]; arr.push(cell); if(cell.containsPiece) { if(cell.piece.colour === this.colour) arr.pop(); break loop3; } } catch(e) {;} } break;
+/*Diagonal*/case 0: loop0: for(let b = 1; b < c; b++) { try { let cell = BOARD.cells[(currentCell.cellID-(9*b))-1]; arr.push(cell); if(cell.containsPiece) { if(cell.piece.colour === this.colour) arr.pop(); break loop0; } } catch(e) {;} }
+/*Straights*/ if(this.pieceType === 'queen') loop0: for(let b = 1; b < c; b++) { try { let cell = BOARD.cells[(currentCell.cellID-b)-1]; arr.push(cell); if(cell.containsPiece) { if(cell.piece.colour === this.colour) arr.pop(); break loop0; } } catch(e) {;} } break;
+/*Diagonal*/case 1: loop1: for(let b = 1; b <= (8-c); b++) { try { let cell = BOARD.cells[(currentCell.cellID-(7*b))-1]; arr.push(cell); if(cell.containsPiece) { if(cell.piece.colour === this.colour) arr.pop(); break loop1; } } catch(e) {;} }
+/*Straights*/ if(this.pieceType === 'queen') loop1: for(let b = 1; b <= (8-c); b++) { try { let cell = BOARD.cells[(currentCell.cellID+b)-1]; arr.push(cell); if(cell.containsPiece) { if(cell.piece.colour === this.colour) arr.pop(); break loop1; } } catch(e) {;} } break;
+/*Diagonal*/case 2: loop2: for(let b = 1; b < c; b++) { try { let cell = BOARD.cells[(currentCell.cellID+(7*b))-1]; arr.push(cell); if(cell.containsPiece) { if(cell.piece.colour === this.colour) arr.pop(); break loop2; } } catch(e) {;} }
+/*Straights*/ if(this.pieceType === 'queen') loop2: for(let b = 1; b <= (8-r); b++) { try { let cell = BOARD.cells[(currentCell.cellID+(8*b))-1]; arr.push(cell); if(cell.containsPiece) { if(cell.piece.colour === this.colour) arr.pop(); break loop2; } } catch(e) {;} } break;
+/*Diagonal*/case 3: loop3: for(let b = 1; b <= (8-c); b++) { try { let cell = BOARD.cells[(currentCell.cellID+(9*b))-1]; arr.push(cell); if(cell.containsPiece) { if(cell.piece.colour === this.colour) arr.pop(); break loop3; } } catch(e) {;} }
+/*Straights*/ if(this.pieceType === 'queen') loop3: for(let b = 1; b < r; b++) { try { let cell = BOARD.cells[(currentCell.cellID-(8*b))-1]; arr.push(cell); if(cell.containsPiece) { if(cell.piece.colour === this.colour) arr.pop(); break loop3; } } catch(e) {;} } break;
           } this.validMoves = arr.filter(e => e !== this.currentCell); break;
         case 'king': this.validMoves = BOARD.cells.filter(e =>
           (e !== this.currentCell) && (
