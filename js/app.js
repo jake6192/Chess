@@ -76,9 +76,9 @@ class Piece {
     };
 
     this.updateValidMovesList = () => {
-      let arr;
+      let arr, currentCell = this.currentCell;
       let _C = this.colour==='W'?0:1;
-      let r = this.currentCell.row, c = this.currentCell.column;
+      let r = currentCell.row, c = currentCell.column;
       switch(this.pieceType) {
         case 'pawn': this.validMoves = BOARD.cells.filter(e => (
             e.containsPiece && // If there is a piece to take. //
@@ -101,10 +101,10 @@ class Piece {
         case 'queen': arr = [];
           if(this.pieceType === 'queen') arr = BOARD.cells.filter(e => (e !== this.currentCell) && (e.row === r || e.column === c));
           for(let a = 0; a < 4; a++) switch(a) {
-            case 0: loop0: for(let b = 1; b < c;      b++) { let cell = BOARD.cells[(this.currentCell.cellID-(9*b))-1]; arr.push(cell); if(cell.containsPiece) break loop0; } break;
-            case 1: loop1: for(let b = 1; b <= (8-c); b++) { let cell = BOARD.cells[(this.currentCell.cellID-(7*b))-1]; arr.push(cell); if(cell.containsPiece) break loop1; } break;
-            case 2: loop2: for(let b = 1; b < c;      b++) { let cell = BOARD.cells[(this.currentCell.cellID+(7*b))-1]; arr.push(cell); if(cell.containsPiece) break loop2; } break;
-            case 3: loop3: for(let b = 1; b <= (8-c); b++) { let cell = BOARD.cells[(this.currentCell.cellID+(9*b))-1]; arr.push(cell); if(cell.containsPiece) break loop3; } break;
+            case 0: loop0: for(let b = 1; b < c;      b++) { try { let cell = BOARD.cells[(currentCell.cellID-(9*b))-1]; arr.push(cell); if(cell.containsPiece) break loop0; } catch(e) { console.log(e); } } break;
+            case 1: loop1: for(let b = 1; b <= (8-c); b++) { try { let cell = BOARD.cells[(currentCell.cellID-(7*b))-1]; arr.push(cell); if(cell.containsPiece) break loop1; } catch(e) { console.log(e); } } break;
+            case 2: loop2: for(let b = 1; b < c;      b++) { try { let cell = BOARD.cells[(currentCell.cellID+(7*b))-1]; arr.push(cell); if(cell.containsPiece) break loop2; } catch(e) { console.log(e); } } break;
+            case 3: loop3: for(let b = 1; b <= (8-c); b++) { try { let cell = BOARD.cells[(currentCell.cellID+(9*b))-1]; arr.push(cell); if(cell.containsPiece) break loop3; } catch(e) { console.log(e); } } break;
           } this.validMoves = arr.filter(e => e !== this.currentCell); break;
         case 'king': this.validMoves = BOARD.cells.filter(e =>
           (e !== this.currentCell) && (
