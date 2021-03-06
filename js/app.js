@@ -75,6 +75,7 @@ class Piece {
       oldCell.containsPiece = false;
       BOARD.whiteIsToMoveNext = !BOARD.whiteIsToMoveNext;
       BOARD.drawCellValues();
+      refreshHighlightEventListener();
     };
 
     this.updateValidMovesList = () => {
@@ -123,6 +124,10 @@ class Piece {
           )}); break;
       }
     };
-    this.showValidMoves = () => { $($('.cell').toArray().filter(e => this.validMoves.indexOf(BOARD.cells[(+$(e).attr('cellID'))-1]) !== -1)).addClass('highlight'); };
+    this.showValidMoves = () => {
+      $('.highlight').removeClass('highlight');
+      $($('.cell').toArray().filter(e => this.validMoves.indexOf(BOARD.cells[(+$(e).attr('cellID'))-1]) !== -1)).addClass('highlight');
+      refreshHighlightEventListener();
+    };
   }
 }
