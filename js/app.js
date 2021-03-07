@@ -41,13 +41,9 @@ class Board {
     this.kingIsInCheck = (colour) => {
       let cellsToCheck = BOARD.cells.filter(e => e.containsPiece && e.piece.colour === (colour==='W'?'B':'W'));
       for(let i = 0; i < cellsToCheck.length; i++) {
-        cellsToCheck[i].piece.updateValidMovesList();
-        let validMoves = cellsToCheck[i].piece.validMoves;
-        if(validMoves.length > 0) {
-          let vm = validMoves.filter(e => e.containsPiece && e.piece.colour === colour );
-          for(let j = 0; j < vm.length; j++)
-            if(vm[j].piece.pieceType === 'king') return true;
-        }
+        let validMoves = cellsToCheck[i].piece.updateValidMovesList();
+        if(validMoves != [] && validMoves.filter(e => e.containsPiece && e.piece.colour === colour && e.piece.pieceType === 'king').length > 0)
+          return true;
       } return false;
     };
   }
@@ -136,6 +132,7 @@ class Piece {
             (e.row === r+1 && e.column === c+1) || (e.row === r+1 && e.column === c) || (e.row === r+1 && e.column === c-1) || (e.row === r && e.column === c-1)
           )}); break;
       }
+      return this.validMoves;
     };
     this.showValidMoves = () => {
       $('.highlight').removeClass('highlight');
