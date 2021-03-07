@@ -37,6 +37,19 @@ class Board {
         if(cell.containsPiece) $(`#board .cell[cellID="${i+1}"]`).html(`<img draggable="true" ondragstart="dragstart_handler(event, this)" src="imgs/${cell.piece.pieceType}_${cell.piece.colour}.png" />`);
       }
     };
+
+    this.kingIsInCheck = (colour) => {
+      let cellsToCheck = BOARD.cells.filter(e => e.containsPiece && e.piece.colour === (colour==='W'?'B':'W'));
+      for(let i = 0; i < cellsToCheck.length; i++) {
+        cellsToCheck[i].piece.updateValidMovesList();
+        let validMoves = cellsToCheck[i].piece.validMoves;
+        if(validMoves.length > 0) {
+          let vm = validMoves.filter(e => e.containsPiece && e.piece.colour === colour );
+          for(let j = 0; j < vm.length; j++)
+            if(vm[j].piece.pieceType === 'king') return true;
+        }
+      } return false;
+    };
   }
 }
 
