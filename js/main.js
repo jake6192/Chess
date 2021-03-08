@@ -30,9 +30,9 @@ $(document).ready(function() {
       if(pieceToMove) {
         let newCell = BOARD.cells[(+$(e.currentTarget).attr('cellID'))-1];
         if(pieceToMove.validMoves.indexOf(newCell) !== -1) {
-         pieceToMove.movePiece(newCell);
-         pieceToMove = undefined;
-       }
+          pieceToMove.movePiece(BOARD, newCell);
+          pieceToMove = undefined;
+        }
       }
     });
   };
@@ -67,8 +67,15 @@ function drop_handler(ev, el) {
  if(pieceToMove) {
    let newCell = BOARD.cells[(+$(el).attr('cellID'))-1];
    if(pieceToMove.validMoves.indexOf(newCell) !== -1) {
-    pieceToMove.movePiece(newCell);
+    pieceToMove.movePiece(BOARD, newCell);
     pieceToMove = undefined;
    }
  }
 }
+
+
+
+
+/****************************
+*|~~  Development Tools  ~~|*
+****************************/
