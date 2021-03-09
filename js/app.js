@@ -110,6 +110,8 @@ class Piece {
       this.currentCell.containsPiece = true;
       oldCell.piece = undefined;
       oldCell.containsPiece = false;
+      if(this.pieceType === 'pawn' && newCell.row === (this.colour==='W'?1:8))
+        this.pieceType = 'queen';
       _BOARD_.whiteIsToMoveNext = !BOARD.whiteIsToMoveNext;
       if(!isProjection) {
         _BOARD_.drawCellValues();
