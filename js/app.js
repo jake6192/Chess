@@ -47,10 +47,10 @@ class Board {
       } return false;
     };
 
-    this.projectMove = (pieceToMove, cellToMoveTo) => {
-      let futureBOARD = new Board();
+    this.cloneBOARD = () => {
+      let cloneBOARD = new Board();
       for(let i = 0; i < 64; i++) {
-        let oldCell = BOARD.cells[i];
+        let oldCell = this.cells[i];
         let newCell = new Cell(oldCell.cellID, oldCell.containsPiece, oldCell.row, oldCell.column);
         if(oldCell.containsPiece) {
           let oldPiece = oldCell.piece;
@@ -58,14 +58,17 @@ class Board {
           if(oldPiece.validMoves) {
             newPiece.validMoves = [];
             for(let j = 0; j < oldPiece.validMoves.length; j++)
-              newPiece.validMoves.push(futureBOARD.cells[oldPiece.validMoves[j].cellID-1]);
+              newPiece.validMoves.push(cloneBOARD.cells[oldPiece.validMoves[j].cellID-1]);
           }
           newCell.piece = newPiece;
-          futureBOARD.pieces.push(newPiece);
-        }
-        futureBOARD.cells.push(newCell);
-      }
-      futureBOARD.pieces.map(e => e.startingCell = futureBOARD.cells[e.startingCell-1]);
+          cloneBOARD.pieces.push(newPiece);
+        } cloneBOARD.cells.push(newCell);
+      } cloneBOARD.pieces.map(e => e.startingCell = cloneBOARD.cells[e.startingCell-1]);
+      return cloneBOARD;
+    };
+
+    this.projectMove = (pieceToMove, cellToMoveTo) => {
+      let futureBOARD = this.cloneBOARD();
       let futurePiece = futureBOARD.cells[pieceToMove.currentCell.cellID-1].piece;
       let futureCell = futureBOARD.cells[cellToMoveTo.cellID-1];
       futurePiece.movePiece(futureBOARD, futureCell, true);
