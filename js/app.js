@@ -87,7 +87,7 @@ class Cell {
     this.piece;
     this.row = row ?? Math.floor((this.cellID+7)/8);
     if(column) this.column = column;
-    for(let i = 0, a = [8,7,6,5,4,3,2,1]; i < 8; i++)
+    else for(let i = 0, a = [8,7,6,5,4,3,2,1]; i < 8; i++)
       if((this.cellID+i)%8 === 0) this.column = a[i];
   }
 }
