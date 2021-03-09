@@ -49,29 +49,29 @@ $(document).ready(function() {
 *********************************/
 
 function dragstart_handler(ev, el) {
- ev.dataTransfer.effectAllowed = "move";
- _pieceToMove_ = BOARD.cells[(+$(el).parent().attr('cellID'))-1].piece;
- if(_pieceToMove_.colour === (BOARD.whiteIsToMoveNext ? 'W' : 'B')) {
-   _pieceToMove_.updateValidMovesList();
-   _pieceToMove_.showValidMoves();
- } else ev.preventDefault();
+  ev.dataTransfer.effectAllowed = "move";
+  _pieceToMove_ = BOARD.cells[(+$(el).parent().attr('cellID'))-1].piece;
+  if(_pieceToMove_.colour === (BOARD.whiteIsToMoveNext ? 'W' : 'B')) {
+    _pieceToMove_.updateValidMovesList();
+    _pieceToMove_.showValidMoves();
+  } else ev.preventDefault();
 }
 
 function dragover_handler(ev) {
- ev.preventDefault();
- ev.dataTransfer.dropEffect = "move"
+  ev.preventDefault();
+  ev.dataTransfer.dropEffect = "move";
 }
 
 function drop_handler(ev, el) {
- ev.preventDefault();
- $('.highlight').removeClass('highlight');
- if(_pieceToMove_) {
-   let newCell = BOARD.cells[(+$(el).attr('cellID'))-1];
-   if(_pieceToMove_.validMoves.indexOf(newCell) !== -1) {
-    _pieceToMove_.movePiece(BOARD, newCell);
-    _pieceToMove_ = undefined;
-   }
- }
+  ev.preventDefault();
+  $('.highlight').removeClass('highlight');
+  if(_pieceToMove_) {
+    let newCell = BOARD.cells[(+$(el).attr('cellID'))-1];
+    if(_pieceToMove_.validMoves.indexOf(newCell) !== -1) {
+      _pieceToMove_.movePiece(BOARD, newCell);
+      _pieceToMove_ = undefined;
+    }
+  }
 }
 
 
