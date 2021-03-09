@@ -1,5 +1,6 @@
 let BOARD;
 let refreshHighlightEventListener;
+let _pieceToMove_;
 $(document).ready(function() {
   BOARD = new Board();
   BOARD.generateCells();
@@ -13,25 +14,26 @@ $(document).ready(function() {
   /*************************
   *|~~  Click handlers  ~~|*
   *************************/
+
   refreshHighlightEventListener = () => {
     $('.cell, .cell img').off('click');
     $('.cell img').click(e => {
       let cell = BOARD.cells[+$(e.currentTarget).parent().attr('cellID')-1];
       if(cell.containsPiece) {
-        pieceToMove = cell.piece;
-        if(pieceToMove.colour === (BOARD.whiteIsToMoveNext ? 'W' : 'B')) {
-          pieceToMove.updateValidMovesList();
-          pieceToMove.showValidMoves();
+        _pieceToMove_ = cell.piece;
+        if(_pieceToMove_.colour === (BOARD.whiteIsToMoveNext ? 'W' : 'B')) {
+          _pieceToMove_.updateValidMovesList();
+          _pieceToMove_.showValidMoves();
         }
       }
     });
     $('.cell.highlight').click(e => {
       $('.highlight').removeClass('highlight');
-      if(pieceToMove) {
+      if(_pieceToMove_) {
         let newCell = BOARD.cells[(+$(e.currentTarget).attr('cellID'))-1];
-        if(pieceToMove.validMoves.indexOf(newCell) !== -1) {
-          pieceToMove.movePiece(BOARD, newCell);
-          pieceToMove = undefined;
+        if(_pieceToMove_.validMoves.indexOf(newCell) !== -1) {
+          _pieceToMove_.movePiece(BOARD, newCell);
+          _pieceToMove_ = undefined;
         }
       }
     });
@@ -46,13 +48,12 @@ $(document).ready(function() {
 *|~~  Drag and drop handlers  ~~|*
 *********************************/
 
-let pieceToMove;
 function dragstart_handler(ev, el) {
  ev.dataTransfer.effectAllowed = "move";
- pieceToMove = BOARD.cells[(+$(el).parent().attr('cellID'))-1].piece;
- if(pieceToMove.colour === (BOARD.whiteIsToMoveNext ? 'W' : 'B')) {
-   pieceToMove.updateValidMovesList();
-   pieceToMove.showValidMoves();
+ _pieceToMove_ = BOARD.cells[(+$(el).parent().attr('cellID'))-1].piece;
+ if(_pieceToMove_.colour === (BOARD.whiteIsToMoveNext ? 'W' : 'B')) {
+   _pieceToMove_.updateValidMovesList();
+   _pieceToMove_.showValidMoves();
  } else ev.preventDefault();
 }
 
@@ -64,11 +65,11 @@ function dragover_handler(ev) {
 function drop_handler(ev, el) {
  ev.preventDefault();
  $('.highlight').removeClass('highlight');
- if(pieceToMove) {
+ if(_pieceToMove_) {
    let newCell = BOARD.cells[(+$(el).attr('cellID'))-1];
-   if(pieceToMove.validMoves.indexOf(newCell) !== -1) {
-    pieceToMove.movePiece(BOARD, newCell);
-    pieceToMove = undefined;
+   if(_pieceToMove_.validMoves.indexOf(newCell) !== -1) {
+    _pieceToMove_.movePiece(BOARD, newCell);
+    _pieceToMove_ = undefined;
    }
  }
 }
