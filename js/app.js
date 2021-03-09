@@ -89,7 +89,6 @@ class Cell {
     if(column) this.column = column;
     for(let i = 0, a = [8,7,6,5,4,3,2,1]; i < 8; i++)
       if((this.cellID+i)%8 === 0) this.column = a[i];
-    this.isEdge = (this.row===1||this.row===8||this.column===1||this.column===8);
   }
 }
 
@@ -173,6 +172,7 @@ class Piece {
       }
       return this.validMoves;
     };
+
     this.showValidMoves = () => {
       $('.highlight').removeClass('highlight');
       $($('.cell').toArray().filter(e => this.validMoves.indexOf(BOARD.cells[(+$(e).attr('cellID'))-1]) !== -1)).addClass('highlight');
